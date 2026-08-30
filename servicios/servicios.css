@@ -15,6 +15,7 @@
   letter-spacing: 0.07em;
   text-transform: uppercase;
   margin-bottom: 1.15rem;
+  touch-action: manipulation;
 }
 
 .service-layout {
@@ -222,6 +223,8 @@
   border-radius: 8px;
   padding: 1.35rem;
   text-decoration: none;
+  touch-action: manipulation;
+  pointer-events: auto;
   box-shadow: 0 14px 35px rgba(7,31,16,0.06);
   transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
 }

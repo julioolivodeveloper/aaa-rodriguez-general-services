@@ -49,6 +49,11 @@
 
     img { max-width: 100%; display: block; }
 
+    a,
+    button {
+      -webkit-tap-highlight-color: rgba(47,180,85,0.22);
+    }
+
     #particles-canvas {
       position: fixed;
       inset: 0;
@@ -206,6 +211,7 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
+      pointer-events: none;
     }
 
     .hero-slide {
@@ -309,6 +315,8 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
       animation: fadeSlideDown 0.8s ease 0.8s both;
     }
 
@@ -327,6 +335,8 @@
       text-decoration: none;
       transition: all 0.25s ease;
       min-height: 54px;
+      touch-action: manipulation;
+      pointer-events: auto;
     }
 
     .btn-primary {
@@ -829,6 +839,7 @@
       bottom: 0;
       width: 100px;
       z-index: 2;
+      pointer-events: none;
     }
 
     .gallery-track-wrapper::before { left: 0; background: linear-gradient(to right, var(--forest-950), transparent); }
@@ -931,7 +942,7 @@
       position: fixed;
       inset: 0;
       z-index: 2500;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: clamp(1rem, 4vw, 3rem);
@@ -943,6 +954,7 @@
     }
 
     .gallery-lightbox.open {
+      display: flex;
       opacity: 1;
       pointer-events: auto;
     }
@@ -1187,7 +1199,7 @@
       position: fixed;
       inset: 0;
       z-index: 2600;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: clamp(1rem, 4vw, 3rem);
@@ -1199,6 +1211,7 @@
     }
 
     .video-lightbox.open {
+      display: flex;
       opacity: 1;
       pointer-events: auto;
     }
@@ -1757,6 +1770,7 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 12px;
+      pointer-events: none;
     }
 
     #chat-window {
@@ -1765,20 +1779,23 @@
       background: white;
       border-radius: 8px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      display: flex;
+      display: none;
       flex-direction: column;
       overflow: hidden;
       transform: scale(0.86) translateY(20px);
       opacity: 0;
       pointer-events: none;
+      visibility: hidden;
       transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
       transform-origin: bottom right;
     }
 
     #chat-window.open {
+      display: flex;
       transform: scale(1) translateY(0);
       opacity: 1;
-      pointer-events: all;
+      pointer-events: auto;
+      visibility: visible;
     }
 
     .chat-header {
@@ -1987,6 +2004,7 @@
       position: relative;
       box-shadow: 0 8px 25px rgba(23,96,44,0.45);
       transition: all 0.25s;
+      pointer-events: auto;
     }
 
     #chat-toggle:hover { transform: scale(1.08); }
@@ -1998,6 +2016,12 @@
       border-radius: 50%;
       border: 2px solid rgba(47,180,85,0.38);
       animation: bubblePulse 2.5s ease infinite;
+      pointer-events: none;
+    }
+
+    .chat-notif-badge,
+    #chat-toggle svg {
+      pointer-events: none;
     }
 
     @keyframes bubblePulse {
@@ -2138,11 +2162,11 @@
       .video-carousel { padding: 0; }
       .video-slide { flex-basis: 100%; }
       .video-arrow {
-        top: auto;
-        bottom: 5.25rem;
+        top: 50%;
+        bottom: auto;
         width: 54px;
         height: 54px;
-        transform: none;
+        transform: translateY(-50%);
         background: rgba(7,31,16,0.86);
         border-color: rgba(255,255,255,0.36);
         box-shadow: 0 12px 28px rgba(0,0,0,0.32);
@@ -3408,6 +3432,7 @@
     showTyping(() => addBotMsg(getBotResponse(text)));
   }
   </script>
+<script src="site-mobile-taps.js"></script>
 <script src="site-translator.js"></script>
 <script src="site-typewriter.js"></script>
 </body>

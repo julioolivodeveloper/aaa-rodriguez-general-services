@@ -48,6 +48,11 @@
 
     img { display: block; max-width: 100%; }
 
+    a,
+    button {
+      -webkit-tap-highlight-color: rgba(47,180,85,0.22);
+    }
+
     nav {
       position: fixed;
       top: 0;
@@ -208,6 +213,7 @@
       background:
         radial-gradient(circle at 78% 26%, rgba(242,165,26,0.2), transparent 34%),
         linear-gradient(90deg, rgba(7,31,16,0.42), transparent 64%);
+      pointer-events: none;
     }
 
     .portfolio-hero::after {
@@ -216,6 +222,7 @@
       inset: 0;
       z-index: 1;
       background: linear-gradient(135deg, rgba(7,31,16,0.9), rgba(18,69,33,0.6), rgba(7,31,16,0.86));
+      pointer-events: none;
     }
 
     .hero-bg-media {
@@ -223,6 +230,7 @@
       inset: 0;
       z-index: 0;
       overflow: hidden;
+      pointer-events: none;
     }
 
     .hero-bg-media img {
@@ -313,6 +321,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+      position: relative;
+      z-index: 3;
     }
 
     .btn {
@@ -325,6 +335,8 @@
       text-decoration: none;
       font-weight: 900;
       transition: all 0.25s;
+      touch-action: manipulation;
+      pointer-events: auto;
     }
 
     .btn-primary {
@@ -579,7 +591,7 @@
       position: fixed;
       inset: 0;
       z-index: 2600;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: clamp(1rem, 4vw, 3rem);
@@ -591,6 +603,7 @@
     }
 
     .video-lightbox.open {
+      display: flex;
       opacity: 1;
       pointer-events: auto;
     }
@@ -905,11 +918,11 @@
       .video-carousel { padding: 0; }
       .video-slide { flex-basis: 100%; }
       .video-arrow {
-        top: auto;
-        bottom: 5.25rem;
+        top: 50%;
+        bottom: auto;
         width: 54px;
         height: 54px;
-        transform: none;
+        transform: translateY(-50%);
         background: rgba(7,31,16,0.86);
         border-color: rgba(255,255,255,0.36);
         box-shadow: 0 12px 28px rgba(0,0,0,0.32);
@@ -1359,6 +1372,7 @@
     }
   });
   </script>
+<script src="site-mobile-taps.js"></script>
 <script src="site-translator.js"></script>
 <script src="site-typewriter.js"></script>
 </body>
