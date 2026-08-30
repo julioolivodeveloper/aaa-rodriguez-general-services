@@ -241,7 +241,30 @@
       margin-bottom: 1.5rem;
     }
 
-    h1 span { color: var(--safety); display: block; }
+    h1 > span { color: var(--safety); display: block; }
+
+    .typewriter-line {
+      display: block;
+      min-height: 1.08em;
+    }
+
+    .typewriter-line [data-typewriter] { display: inline; }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 0.08em;
+      height: 0.78em;
+      margin-left: 0.06em;
+      border-radius: 2px;
+      background: var(--leaf-300);
+      vertical-align: -0.05em;
+      animation: cursorBlink 0.85s steps(2, start) infinite;
+    }
+
+    @keyframes cursorBlink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
+    }
 
     .hero-copy {
       color: rgba(255,255,255,0.82);
@@ -743,6 +766,7 @@
       .mobile-panel { top: 76px; }
       .container { width: min(100% - 2.5rem, 1200px); }
       .portfolio-hero { min-height: 76vh; padding: 8.5rem 0 4rem; }
+      .typewriter-line { min-height: 2.16em; }
       .hero-actions .btn { width: 100%; }
       .projects-grid { grid-template-columns: 1fr; }
       .project-card img { height: 260px; }
@@ -761,6 +785,10 @@
       .footer-bottom { align-items: flex-start; }
       .lightbox { padding: 1rem; }
       .lightbox-close { top: 0.5rem; right: 0.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .typewriter-cursor { display: none; }
     }
   </style>
 </head>
@@ -797,7 +825,12 @@
   <div class="container">
     <div class="hero-inner">
       <div class="section-tag">Portafolio real</div>
-      <h1>Trabajos destacados <span>AAA Rodriguez</span></h1>
+      <h1>
+        Trabajos destacados
+        <span class="typewriter-line">
+          <span data-typewriter data-phrases="AAA Rodriguez|poda segura|limpieza de patios|trabajos reales">AAA Rodriguez</span><span class="typewriter-cursor" aria-hidden="true"></span>
+        </span>
+      </h1>
       <p class="hero-copy">Proyectos de poda, remoción, limpieza y mantenimiento exterior realizados para proteger propiedades, prevenir daños y mantener patios listos para disfrutarse en Florida Central.</p>
       <div class="hero-actions">
         <a href="#featured" class="btn btn-primary">Ver proyectos</a>
@@ -1125,6 +1158,7 @@
     button.replaceWith(video);
     video.play().catch(() => {});
   }
-</script>
+  </script>
+<script src="site-typewriter.js"></script>
 </body>
 </html>

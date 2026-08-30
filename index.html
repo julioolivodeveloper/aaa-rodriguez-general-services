@@ -241,9 +241,32 @@
       max-width: 850px;
     }
 
-    .hero-title span {
+    .hero-title > span {
       color: var(--leaf-300);
       display: block;
+    }
+
+    .typewriter-line {
+      display: block;
+      min-height: 1.08em;
+    }
+
+    .typewriter-line [data-typewriter] { display: inline; }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 0.08em;
+      height: 0.78em;
+      margin-left: 0.06em;
+      border-radius: 2px;
+      background: var(--safety);
+      vertical-align: -0.05em;
+      animation: cursorBlink 0.85s steps(2, start) infinite;
+    }
+
+    @keyframes cursorBlink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
     }
 
     .hero-subtitle {
@@ -1972,6 +1995,7 @@
       .form-row { grid-template-columns: 1fr; }
       .about-features { grid-template-columns: 1fr; }
       .hero-content { padding: 7.2rem 1.25rem 4rem; }
+      .hero-title .typewriter-line { min-height: 2.16em; }
       .container { padding: 0 1.25rem; }
       .hero-stats { gap: 1.5rem; }
       .scroll-indicator { display: none; }
@@ -1990,7 +2014,12 @@
         padding-right: 22px;
       }
       .hero-stat-num { font-size: 2.1rem; }
+      .hero-title .typewriter-line { min-height: 3.2em; }
       .contact-form { padding: 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .typewriter-cursor { display: none; }
     }
   </style>
 </head>
@@ -2034,7 +2063,9 @@
 
     <h1 class="hero-title">
       Protegemos tu hogar,
-      <span>tu propiedad y tu familia</span>
+      <span class="typewriter-line">
+        <span data-typewriter data-phrases="tu propiedad y tu familia|tu patio limpio y seguro|tu hogar antes del daño|tu familia en Florida Central">tu propiedad y tu familia</span><span class="typewriter-cursor" aria-hidden="true"></span>
+      </span>
     </h1>
 
     <p class="hero-subtitle">
@@ -3080,6 +3111,7 @@
     addUserMsg(text);
     showTyping(() => addBotMsg(getBotResponse(text)));
   }
-</script>
+  </script>
+<script src="site-typewriter.js"></script>
 </body>
 </html>
