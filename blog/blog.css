@@ -42,9 +42,10 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(7,31,16,0.97);
+  background: rgba(255,255,255,0.97);
   backdrop-filter: blur(20px);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.22);
+  border-bottom: 1px solid rgba(36,138,66,0.14);
+  box-shadow: 0 4px 30px rgba(7,31,16,0.12);
 }
 
 .nav-logo {
@@ -71,7 +72,7 @@ nav {
 }
 
 .nav-links a {
-  color: rgba(255,255,255,0.9);
+  color: var(--forest-800);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 800;
@@ -81,7 +82,7 @@ nav {
 }
 
 .nav-links a:hover,
-.nav-links a.active { color: var(--leaf-300); }
+.nav-links a.active { color: var(--leaf-600); }
 
 .nav-cta {
   background: var(--leaf-500);
@@ -104,7 +105,7 @@ nav {
 .hamburger span {
   width: 27px;
   height: 2px;
-  background: white;
+  background: var(--forest-800);
   border-radius: 2px;
 }
 
@@ -115,16 +116,17 @@ nav {
   left: 0;
   right: 0;
   z-index: 999;
-  background: var(--forest-950);
+  background: white;
   padding: 1.25rem;
-  border-top: 1px solid rgba(255,255,255,0.12);
+  border-top: 1px solid rgba(36,138,66,0.14);
+  box-shadow: 0 18px 45px rgba(7,31,16,0.14);
 }
 
 .mobile-panel.open { display: block; }
 
 .mobile-panel a {
   display: block;
-  color: white;
+  color: var(--forest-800);
   text-align: center;
   padding: 0.9rem 1rem;
   text-decoration: none;

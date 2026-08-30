@@ -70,18 +70,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(7, 31, 16, 0.97);
+      background: rgba(255,255,255,0.97);
       backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(36,138,66,0.14);
       transition: box-shadow 0.3s ease;
     }
 
-    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.28); }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(7,31,16,0.12); }
 
     .nav-logo {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      color: white;
+      color: var(--forest-800);
       text-decoration: none;
       min-width: 0;
     }
@@ -111,7 +112,7 @@
     nav.scrolled ~ .nav-links { height: 68px; }
 
     .nav-links a {
-      color: rgba(255,255,255,0.9);
+      color: var(--forest-800);
       text-decoration: none;
       font-size: 0.83rem;
       font-weight: 700;
@@ -133,7 +134,7 @@
       transition: transform 0.25s ease;
     }
 
-    .nav-links a:hover { color: var(--leaf-300); }
+    .nav-links a:hover { color: var(--leaf-600); }
     .nav-links a:hover::after { transform: scaleX(1); }
 
     .nav-cta {
@@ -161,7 +162,7 @@
       display: block;
       width: 27px;
       height: 2px;
-      background: white;
+      background: var(--forest-800);
       border-radius: 2px;
       transition: all 0.3s;
     }
@@ -1959,7 +1960,9 @@
         right: 0;
         height: auto !important;
         z-index: 1200;
-        background: var(--forest-950);
+        background: white;
+        border-top: 1px solid rgba(36,138,66,0.14);
+        box-shadow: 0 18px 45px rgba(7,31,16,0.14);
         padding: 2rem;
         gap: 1.35rem;
         align-items: center;
@@ -1971,7 +1974,10 @@
         width: 100%;
         padding: 10px 24px;
         text-align: center;
+        color: var(--forest-800);
       }
+
+      .nav-links.open .nav-cta { color: white !important; }
 
       nav.scrolled ~ .nav-links.open { top: 76px; }
 
