@@ -710,6 +710,43 @@
     #gallery .section-desc { color: rgba(255,255,255,0.64); }
     #gallery .divider { background: linear-gradient(to right, var(--leaf-300), var(--safety)); }
 
+    .gallery-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
+    .gallery-portfolio-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 13px 24px;
+      border-radius: 50px;
+      background: var(--leaf-500);
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 0 10px 28px rgba(47,180,85,0.28);
+      transition: transform 0.22s, background 0.22s, color 0.22s;
+    }
+
+    .gallery-portfolio-btn:hover {
+      background: var(--safety);
+      color: var(--forest-950);
+      transform: translateY(-2px);
+    }
+
+    .gallery-portfolio-btn svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
     .gallery-track-wrapper {
       overflow: hidden;
       margin-top: 3rem;
@@ -760,6 +797,32 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
+    .gallery-item::after {
+      content: '+';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(7,31,16,0.78);
+      color: white;
+      font-size: 1.35rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0;
+      transform: scale(0.86);
+      transition: opacity 0.22s, transform 0.22s, background 0.22s;
+    }
+
+    .gallery-item:hover::after,
+    .gallery-item:focus-visible::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     .gallery-item:focus-visible {
       outline: 3px solid var(--safety);
       outline-offset: 4px;
@@ -794,6 +857,7 @@
     }
 
     body.gallery-lightbox-open { overflow: hidden; }
+    body.gallery-lightbox-open .gallery-track { animation-play-state: paused; }
 
     .gallery-lightbox {
       position: fixed;
@@ -816,10 +880,10 @@
     }
 
     .gallery-lightbox-content {
-      width: min(1060px, 100%);
+      width: min(1180px, 100%);
       max-height: calc(100vh - 2rem);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       border-radius: 8px;
       background: linear-gradient(145deg, rgba(7,31,16,0.98), rgba(2,14,7,0.98));
       border: 1px solid rgba(255,255,255,0.14);
@@ -834,9 +898,11 @@
 
     .gallery-lightbox img {
       width: 100%;
+      height: auto;
       max-height: calc(100vh - 8rem);
       display: block;
       object-fit: contain;
+      border-radius: 8px 8px 0 0;
       background: #020e07;
     }
 
@@ -2058,6 +2124,12 @@
       <h2 class="section-title">Patios limpios, seguros <span>y bien cuidados</span></h2>
       <div class="divider"></div>
       <p class="section-desc">Fotos reales de trabajos, equipo, árboles, patios y propiedades atendidas por AAA Rodriguez General Services.</p>
+      <div class="gallery-actions">
+        <a href="portfolio.html" class="gallery-portfolio-btn" aria-label="Ver portafolio de trabajos de AAA Rodriguez">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Ver Portafolio
+        </a>
+      </div>
     </div>
   </div>
 
