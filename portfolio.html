@@ -542,7 +542,8 @@
     }
 
     .video-card,
-    .inline-video {
+    .inline-video,
+    .video-player-wrap {
       aspect-ratio: 4 / 5;
       width: 100%;
       min-height: 0;
@@ -570,6 +571,42 @@
     .video-card img { transition: transform 0.35s; }
     .video-card:hover img { transform: scale(1.04); }
     .inline-video { display: block; }
+
+    .video-player-wrap .inline-video {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: #03120a;
+    }
+
+    .video-fallback {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      min-width: 138px;
+      padding: 0 1rem;
+      border-radius: 999px;
+      background: var(--safety);
+      color: var(--forest-950);
+      font-weight: 900;
+      text-decoration: none;
+      transform: translateX(-50%);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.32);
+    }
+
+    .video-fallback[hidden] {
+      display: none;
+    }
 
     .play-button {
       position: absolute;
@@ -1178,22 +1215,55 @@
     if (Math.abs(diff) > 45) moveVideoSlide(diff > 0 ? 1 : -1);
   }, { passive: true });
 
+  function getCurrentVideoLanguage() {
+    return window.SiteTranslator?.getLanguage?.() || localStorage.getItem('aaaRodriguezLanguage') || document.documentElement.lang || 'es';
+  }
+
   function playVideo(button) {
+    pauseInlineVideos();
+
+    const player = document.createElement('div');
+    player.className = 'video-player-wrap';
+
     const video = document.createElement('video');
     video.className = 'inline-video';
     video.controls = true;
-    video.autoplay = true;
     video.muted = true;
+    video.defaultMuted = true;
     video.playsInline = true;
-    video.preload = 'metadata';
-    video.poster = button.dataset.poster;
+    video.preload = 'auto';
+    video.poster = button.dataset.poster || '';
+    video.src = button.dataset.src;
+    video.setAttribute('controls', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('preload', 'auto');
+    video.setAttribute('aria-label', button.getAttribute('aria-label') || 'Video AAA Rodriguez');
 
-    const source = document.createElement('source');
-    source.src = button.dataset.src;
-    source.type = 'video/mp4';
-    video.appendChild(source);
-    button.replaceWith(video);
-    video.play().catch(() => {});
+    const fallback = document.createElement('a');
+    fallback.className = 'video-fallback';
+    fallback.href = button.dataset.src;
+    fallback.target = '_blank';
+    fallback.rel = 'noopener';
+    fallback.hidden = true;
+    fallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open video' : 'Abrir video';
+
+    video.addEventListener('touchstart', event => event.stopPropagation(), { passive: true });
+    video.addEventListener('touchend', event => event.stopPropagation(), { passive: true });
+    video.addEventListener('error', () => { fallback.hidden = false; });
+    video.addEventListener('play', () => { fallback.hidden = true; });
+
+    player.append(video, fallback);
+    button.replaceWith(player);
+    video.load();
+
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {
+        video.controls = true;
+        fallback.hidden = false;
+      });
+    }
   }
   </script>
 <script src="site-translator.js"></script>
