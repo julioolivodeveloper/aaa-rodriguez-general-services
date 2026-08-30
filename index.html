@@ -670,6 +670,7 @@
       overflow: hidden;
       color: inherit;
       text-decoration: none;
+      touch-action: manipulation;
       transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -798,6 +799,7 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       box-shadow: 0 10px 28px rgba(47,180,85,0.28);
+      touch-action: manipulation;
       transition: transform 0.22s, background 0.22s, color 0.22s;
     }
 
@@ -1163,6 +1165,7 @@
       display: block;
       cursor: pointer;
       padding: 0;
+      touch-action: manipulation;
     }
 
     .video-card img,
@@ -1178,23 +1181,81 @@
 
     .video-card:hover img { transform: scale(1.04); }
 
-    .video-player-wrap .inline-video {
-      position: absolute;
+    body.video-lightbox-open { overflow: hidden; }
+
+    .video-lightbox {
+      position: fixed;
       inset: 0;
-      aspect-ratio: auto;
+      z-index: 2600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 4vw, 3rem);
+      background: rgba(2, 14, 7, 0.88);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .video-lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-lightbox-content {
+      width: min(920px, 100%);
+      max-height: calc(100dvh - 2rem);
+      position: relative;
+      overflow: visible;
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(7,31,16,0.98), rgba(2,14,7,0.98));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 28px 90px rgba(0,0,0,0.48);
+      transform: scale(0.96);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .video-lightbox.open .video-lightbox-content {
+      transform: scale(1);
+    }
+
+    .video-lightbox-player {
+      display: block;
       width: 100%;
-      height: 100%;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
-      background: #03120a;
+      max-height: calc(100dvh - 6rem);
+      border-radius: 8px;
+      background: #020e07;
+      object-fit: contain;
+    }
+
+    .video-lightbox-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 50%;
+      background: rgba(7,31,16,0.86);
+      color: white;
+      font-size: 2rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .video-lightbox-close:hover {
+      background: var(--leaf-500);
+      transform: scale(1.04);
     }
 
     .video-fallback {
-      position: absolute;
-      left: 50%;
-      bottom: 1rem;
-      z-index: 2;
+      margin: 1rem auto 1.1rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1206,7 +1267,6 @@
       color: var(--forest-950);
       font-weight: 900;
       text-decoration: none;
-      transform: translateX(-50%);
       box-shadow: 0 8px 22px rgba(0,0,0,0.32);
     }
 
@@ -1261,9 +1321,10 @@
       display: grid;
       place-items: center;
       cursor: pointer;
+      touch-action: manipulation;
       transition: all 0.2s;
       backdrop-filter: blur(12px);
-      z-index: 3;
+      z-index: 6;
     }
 
     .video-arrow:hover {
@@ -2078,12 +2139,20 @@
       .video-slide { flex-basis: 100%; }
       .video-arrow {
         top: auto;
-        bottom: 4.8rem;
+        bottom: 5.25rem;
+        width: 54px;
+        height: 54px;
         transform: none;
-        background: rgba(7,31,16,0.72);
+        background: rgba(7,31,16,0.86);
+        border-color: rgba(255,255,255,0.36);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.32);
       }
       .video-prev { left: 0.75rem; }
       .video-next { right: 0.75rem; }
+      .video-lightbox { padding: 0.85rem; }
+      .video-lightbox-content { width: 100%; }
+      .video-lightbox-player { max-height: calc(100dvh - 5.5rem); }
+      .video-lightbox-close { top: 0.55rem; right: 0.55rem; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-bottom { align-items: flex-start; }
       .form-row { grid-template-columns: 1fr; }
@@ -2521,6 +2590,14 @@
   </div>
 </div>
 
+<div class="video-lightbox" id="videoLightbox" role="dialog" aria-modal="true" aria-label="Video expandido" aria-hidden="true">
+  <div class="video-lightbox-content">
+    <button class="video-lightbox-close" id="videoLightboxClose" type="button" aria-label="Cerrar video">&times;</button>
+    <video class="video-lightbox-player" id="videoLightboxPlayer" controls playsinline webkit-playsinline preload="none"></video>
+    <a class="video-fallback" id="videoLightboxFallback" href="#" target="_blank" rel="noopener" hidden>Abrir video</a>
+  </div>
+</div>
+
 <section id="why">
   <div class="container">
     <div class="why-grid">
@@ -2860,6 +2937,16 @@
     link.addEventListener('click', () => closeMenu());
   });
 
+  document.querySelectorAll('.service-card, .gallery-portfolio-btn').forEach(link => {
+    link.addEventListener('click', event => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#')) return;
+      event.preventDefault();
+      window.location.assign(link.href);
+    });
+  });
+
   const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('.hero-dot');
   let currentSlide = 0;
@@ -2946,52 +3033,64 @@
     return window.SiteTranslator?.getLanguage?.() || localStorage.getItem('aaaRodriguezLanguage') || document.documentElement.lang || 'es';
   }
 
+  const videoLightbox = document.getElementById('videoLightbox');
+  const videoLightboxPlayer = document.getElementById('videoLightboxPlayer');
+  const videoLightboxClose = document.getElementById('videoLightboxClose');
+  const videoLightboxFallback = document.getElementById('videoLightboxFallback');
+
+  function showVideoFallback() {
+    videoLightboxFallback.hidden = false;
+  }
+
+  function closeVideoLightbox() {
+    videoLightbox.classList.remove('open');
+    videoLightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('video-lightbox-open');
+    videoLightboxPlayer.pause();
+    videoLightboxPlayer.removeAttribute('src');
+    videoLightboxPlayer.removeAttribute('poster');
+    videoLightboxPlayer.load();
+    videoLightboxFallback.hidden = true;
+    videoLightboxFallback.href = '#';
+  }
+
   function playVideo(button) {
     pauseInlineVideos();
+    videoLightboxPlayer.pause();
+    videoLightboxPlayer.controls = true;
+    videoLightboxPlayer.muted = true;
+    videoLightboxPlayer.defaultMuted = true;
+    videoLightboxPlayer.playsInline = true;
+    videoLightboxPlayer.poster = button.dataset.poster || '';
+    videoLightboxPlayer.src = button.dataset.src;
+    videoLightboxPlayer.setAttribute('controls', '');
+    videoLightboxPlayer.setAttribute('playsinline', '');
+    videoLightboxPlayer.setAttribute('webkit-playsinline', '');
+    videoLightboxPlayer.setAttribute('preload', 'auto');
+    videoLightboxPlayer.setAttribute('aria-label', button.getAttribute('aria-label') || 'Video AAA Rodriguez');
 
-    const player = document.createElement('div');
-    player.className = 'video-player-wrap';
+    videoLightboxFallback.hidden = true;
+    videoLightboxFallback.href = button.dataset.src;
+    videoLightboxFallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open video' : 'Abrir video';
 
-    const video = document.createElement('video');
-    video.className = 'inline-video';
-    video.controls = true;
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    video.poster = button.dataset.poster || '';
-    video.src = button.dataset.src;
-    video.setAttribute('controls', '');
-    video.setAttribute('playsinline', '');
-    video.setAttribute('webkit-playsinline', '');
-    video.setAttribute('preload', 'auto');
-    video.setAttribute('aria-label', button.getAttribute('aria-label') || 'Video AAA Rodriguez');
+    videoLightbox.classList.add('open');
+    videoLightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('video-lightbox-open');
+    videoLightboxPlayer.load();
 
-    const fallback = document.createElement('a');
-    fallback.className = 'video-fallback';
-    fallback.href = button.dataset.src;
-    fallback.target = '_blank';
-    fallback.rel = 'noopener';
-    fallback.hidden = true;
-    fallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open video' : 'Abrir video';
-
-    video.addEventListener('touchstart', event => event.stopPropagation(), { passive: true });
-    video.addEventListener('touchend', event => event.stopPropagation(), { passive: true });
-    video.addEventListener('error', () => { fallback.hidden = false; });
-    video.addEventListener('play', () => { fallback.hidden = true; });
-
-    player.append(video, fallback);
-    button.replaceWith(player);
-    video.load();
-
-    const playPromise = video.play();
+    const playPromise = videoLightboxPlayer.play();
+    videoLightboxClose.focus();
     if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(() => {
-        video.controls = true;
-        fallback.hidden = false;
-      });
+      playPromise.catch(showVideoFallback);
     }
   }
+
+  videoLightboxPlayer.addEventListener('error', showVideoFallback);
+  videoLightboxPlayer.addEventListener('play', () => { videoLightboxFallback.hidden = true; });
+  videoLightbox.addEventListener('click', event => {
+    if (event.target === videoLightbox) closeVideoLightbox();
+  });
+  videoLightboxClose.addEventListener('click', closeVideoLightbox);
 
   const galleryLightbox = document.getElementById('galleryLightbox');
   const galleryLightboxImage = document.getElementById('galleryLightboxImage');
@@ -3062,6 +3161,9 @@
   galleryLightboxClose.addEventListener('click', closeGalleryImage);
 
   document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && videoLightbox.classList.contains('open')) {
+      closeVideoLightbox();
+    }
     if (event.key === 'Escape' && galleryLightbox.classList.contains('open')) {
       closeGalleryImage();
     }
