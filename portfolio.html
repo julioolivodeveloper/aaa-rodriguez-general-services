@@ -1332,8 +1332,10 @@
     pauseInlineVideos();
     videoLightboxPlayer.pause();
     videoLightboxPlayer.controls = true;
-    videoLightboxPlayer.muted = true;
-    videoLightboxPlayer.defaultMuted = true;
+    videoLightboxPlayer.muted = false;
+    videoLightboxPlayer.defaultMuted = false;
+    videoLightboxPlayer.removeAttribute('muted');
+    videoLightboxPlayer.volume = 1;
     videoLightboxPlayer.playsInline = true;
     videoLightboxPlayer.poster = button.dataset.poster || '';
     videoLightboxPlayer.src = button.dataset.src;
