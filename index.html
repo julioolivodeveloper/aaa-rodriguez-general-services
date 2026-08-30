@@ -148,6 +148,32 @@
     .nav-cta::after { display: none; }
     .nav-cta:hover { background: var(--safety); color: var(--forest-950) !important; }
 
+    .language-item {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .language-toggle {
+      border: 1px solid rgba(36,138,66,0.22);
+      border-radius: 50px;
+      background: var(--leaf-100);
+      color: var(--forest-800);
+      min-height: 38px;
+      padding: 8px 13px;
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .language-toggle:hover {
+      background: var(--forest-800);
+      color: white;
+      transform: translateY(-1px);
+    }
+
     .hamburger {
       display: none;
       flex-direction: column;
@@ -1979,6 +2005,15 @@
 
       .nav-links.open .nav-cta { color: white !important; }
 
+      .nav-links.open .language-item {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-links.open .language-toggle {
+        width: min(100%, 220px);
+      }
+
       nav.scrolled ~ .nav-links.open { top: 76px; }
 
       .about-grid,
@@ -2680,11 +2715,11 @@
     <div class="chat-messages" id="chatMessages"></div>
 
     <div class="chat-quick-replies" id="quickReplies">
-      <button class="quick-reply" onclick="sendQuick('Qué servicios ofrecen')">Servicios</button>
-      <button class="quick-reply" onclick="sendQuick('En qué áreas trabajan')">Áreas</button>
-      <button class="quick-reply" onclick="sendQuick('Tengo una rama peligrosa')">Rama peligrosa</button>
-      <button class="quick-reply" onclick="sendQuick('Cómo pido cotización')">Cotización</button>
-      <button class="quick-reply" onclick="sendQuick('Cuál es el teléfono')">Teléfono</button>
+      <button class="quick-reply" data-question-es="Qué servicios ofrecen" data-question-en="What services do you offer?" onclick="sendQuick(this)">Servicios</button>
+      <button class="quick-reply" data-question-es="En qué áreas trabajan" data-question-en="What areas do you serve?" onclick="sendQuick(this)">Áreas</button>
+      <button class="quick-reply" data-question-es="Tengo una rama peligrosa" data-question-en="I have a dangerous branch" onclick="sendQuick(this)">Rama peligrosa</button>
+      <button class="quick-reply" data-question-es="Cómo pido cotización" data-question-en="How do I request a quote?" onclick="sendQuick(this)">Cotización</button>
+      <button class="quick-reply" data-question-es="Cuál es el teléfono" data-question-en="What is the phone number?" onclick="sendQuick(this)">Teléfono</button>
     </div>
 
     <div class="chat-input-row">
@@ -3003,18 +3038,28 @@
     event.preventDefault();
     const form = event.target;
     const data = new FormData(form);
-    const text = [
-      'Hola AAA Rodriguez General Services, necesito una cotización.',
-      `Nombre: ${data.get('name')}`,
-      `Teléfono: ${data.get('phone')}`,
-      `Ciudad: ${data.get('city')}`,
-      `Servicio: ${data.get('service')}`,
-      `Detalles: ${data.get('message')}`
-    ].join('\n');
+    const isEnglish = getCurrentLanguage() === 'en';
+    const text = isEnglish
+      ? [
+        'Hello AAA Rodriguez General Services, I need a quote.',
+        `Name: ${data.get('name')}`,
+        `Phone: ${data.get('phone')}`,
+        `City: ${data.get('city')}`,
+        `Service: ${data.get('service')}`,
+        `Details: ${data.get('message')}`
+      ].join('\n')
+      : [
+        'Hola AAA Rodriguez General Services, necesito una cotización.',
+        `Nombre: ${data.get('name')}`,
+        `Teléfono: ${data.get('phone')}`,
+        `Ciudad: ${data.get('city')}`,
+        `Servicio: ${data.get('service')}`,
+        `Detalles: ${data.get('message')}`
+      ].join('\n');
 
     const button = form.querySelector('.form-submit');
     const original = button.innerHTML;
-    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Abriendo mensaje...';
+    button.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ${isEnglish ? 'Opening message...' : 'Abriendo mensaje...'}`;
     button.style.background = '#248a42';
     window.location.href = `sms:${BUSINESS_PHONE}?&body=${encodeURIComponent(text)}`;
 
@@ -3026,46 +3071,91 @@
 
   const FAQ = [
     {
-      keywords: ['servicio', 'servicios', 'ofrecen', 'hacen', 'trabajo', 'trabajan'],
-      answer: 'Ofrecemos corte y poda de árboles, remoción de árboles, eliminación de ramas peligrosas, limpieza de patios, recogida de ramas y hojas, corte de grama y mantenimiento de áreas verdes.'
+      keywords: ['servicio', 'servicios', 'ofrecen', 'hacen', 'trabajo', 'trabajan', 'service', 'services', 'offer', 'work', 'job', 'jobs'],
+      answer: {
+        es: 'Ofrecemos corte y poda de árboles, remoción de árboles, eliminación de ramas peligrosas, limpieza de patios, recogida de ramas y hojas, corte de grama y mantenimiento de áreas verdes.',
+        en: 'We offer tree cutting and trimming, tree removal, dangerous branch removal, yard cleanup, branch and leaf pickup, lawn mowing, and green area maintenance.'
+      }
     },
     {
-      keywords: ['area', 'área', 'ciudad', 'donde', 'ubicacion', 'ubicación', 'lakeland', 'orlando', 'tampa', 'kissimmee', 'haines'],
-      answer: 'Trabajamos en Lakeland, Orlando, Tampa, Kissimmee, Haines City y alrededores. También atendemos propiedades en toda Florida Central.'
+      keywords: ['area', 'área', 'areas', 'ciudad', 'donde', 'ubicacion', 'ubicación', 'where', 'serve', 'coverage', 'lakeland', 'orlando', 'tampa', 'kissimmee', 'haines'],
+      answer: {
+        es: 'Trabajamos en Lakeland, Orlando, Tampa, Kissimmee, Haines City y alrededores. También atendemos propiedades en toda Florida Central.',
+        en: 'We work in Lakeland, Orlando, Tampa, Kissimmee, Haines City, and surrounding areas. We also serve properties throughout Central Florida.'
+      }
     },
     {
-      keywords: ['rama', 'peligro', 'peligrosa', 'techo', 'carro', 'vehiculo', 'vehículo', 'emergencia', 'riesgo'],
-      answer: 'Si tienes una rama peligrosa cerca de un techo, vehículo, entrada o área familiar, llama al 863-257-8339. El enfoque es prevenir daños y retirar el riesgo antes de que ocurra un accidente.'
+      keywords: ['rama', 'peligro', 'peligrosa', 'techo', 'carro', 'vehiculo', 'vehículo', 'emergencia', 'riesgo', 'branch', 'dangerous', 'roof', 'car', 'vehicle', 'emergency', 'risk'],
+      answer: {
+        es: 'Si tienes una rama peligrosa cerca de un techo, vehículo, entrada o área familiar, llama al 863-257-8339. El enfoque es prevenir daños y retirar el riesgo antes de que ocurra un accidente.',
+        en: 'If you have a dangerous branch near a roof, vehicle, driveway, or family area, call 863-257-8339. The focus is preventing damage and removing the risk before an accident happens.'
+      }
     },
     {
       keywords: ['cotizacion', 'cotización', 'precio', 'costo', 'estimate', 'quote', 'cuanto', 'cuánto'],
-      answer: 'Para pedir cotización, llama al 863-257-8339 o llena el formulario. Incluye ciudad, fotos si las tienes, tipo de servicio y una descripción del riesgo o limpieza que necesitas.'
+      answer: {
+        es: 'Para pedir cotización, llama al 863-257-8339 o llena el formulario. Incluye ciudad, fotos si las tienes, tipo de servicio y una descripción del riesgo o limpieza que necesitas.',
+        en: 'To request a quote, call 863-257-8339 or fill out the form. Include your city, photos if you have them, the service type, and a description of the risk or cleanup you need.'
+      }
     },
     {
-      keywords: ['telefono', 'teléfono', 'llamar', 'numero', 'número', 'contacto'],
-      answer: 'Puedes llamar directamente a AAA Rodriguez General Services al 863-257-8339.'
+      keywords: ['telefono', 'teléfono', 'llamar', 'numero', 'número', 'contacto', 'phone', 'number', 'call', 'contact'],
+      answer: {
+        es: 'Puedes llamar directamente a AAA Rodriguez General Services al 863-257-8339.',
+        en: 'You can call AAA Rodriguez General Services directly at 863-257-8339.'
+      }
     },
     {
       keywords: ['grama', 'pasto', 'lawn', 'green', 'areas verdes', 'áreas verdes'],
-      answer: 'Sí. Hacemos corte de grama y mantenimiento de áreas verdes para mantener patios limpios, uniformes y con buena apariencia.'
+      answer: {
+        es: 'Sí. Hacemos corte de grama y mantenimiento de áreas verdes para mantener patios limpios, uniformes y con buena apariencia.',
+        en: 'Yes. We provide lawn mowing and green area maintenance to keep yards clean, even, and looking good.'
+      }
     },
     {
-      keywords: ['patio', 'limpieza', 'basura', 'hojas', 'ramas', 'desechos'],
-      answer: 'Sí. Hacemos limpieza y mantenimiento de patios, incluyendo recogida de basura, ramas, hojas y desechos.'
+      keywords: ['patio', 'limpieza', 'basura', 'hojas', 'ramas', 'desechos', 'yard', 'cleanup', 'trash', 'leaves', 'branches', 'debris'],
+      answer: {
+        es: 'Sí. Hacemos limpieza y mantenimiento de patios, incluyendo recogida de basura, ramas, hojas y desechos.',
+        en: 'Yes. We do yard cleanup and maintenance, including pickup of trash, branches, leaves, and debris.'
+      }
     },
     {
       keywords: ['hola', 'buenos', 'buenas', 'hello', 'hi'],
-      answer: 'Hola. Soy el asistente de AAA Rodriguez General Services. Puedo ayudarte con servicios, áreas de cobertura, cotización y teléfono.'
+      answer: {
+        es: 'Hola. Soy el asistente de AAA Rodriguez General Services. Puedo ayudarte con servicios, áreas de cobertura, cotización y teléfono.',
+        en: 'Hello. I am the AAA Rodriguez General Services assistant. I can help with services, coverage areas, quotes, and phone information.'
+      }
     },
     {
       keywords: ['gracias', 'thank'],
-      answer: 'Con gusto. Para atención directa llama al 863-257-8339.'
+      answer: {
+        es: 'Con gusto. Para atención directa llama al 863-257-8339.',
+        en: 'You are welcome. For direct assistance, call 863-257-8339.'
+      }
     }
   ];
 
-  const FALLBACK = 'Para esa pregunta es mejor hablar directo con el equipo. Llama al 863-257-8339 o llena el formulario para enviar los detalles por mensaje.';
+  const FALLBACK = {
+    es: 'Para esa pregunta es mejor hablar directo con el equipo. Llama al 863-257-8339 o llena el formulario para enviar los detalles por mensaje.',
+    en: 'For that question, it is best to speak directly with the team. Call 863-257-8339 or fill out the form to send the details by message.'
+  };
+
+  const WELCOME_MESSAGE = {
+    es: 'Hola. Soy el asistente de AAA Rodriguez General Services.\n\nPuedo responder sobre servicios, áreas de trabajo, ramas peligrosas y cotizaciones. ¿Qué necesitas?',
+    en: 'Hello. I am the AAA Rodriguez General Services assistant.\n\nI can answer questions about services, service areas, dangerous branches, and quotes. What do you need?'
+  };
+
   let chatOpen = false;
   let welcomeSent = false;
+
+  function getCurrentLanguage() {
+    return window.SiteTranslator?.getLanguage?.() || localStorage.getItem('aaaRodriguezLanguage') || 'es';
+  }
+
+  function localizedText(value) {
+    const lang = getCurrentLanguage() === 'en' ? 'en' : 'es';
+    return typeof value === 'string' ? value : value[lang] || value.es;
+  }
 
   function toggleChat() {
     chatOpen = !chatOpen;
@@ -3078,7 +3168,7 @@
       if (!welcomeSent) {
         welcomeSent = true;
         setTimeout(() => {
-          showTyping(() => addBotMsg('Hola. Soy el asistente de AAA Rodriguez General Services.\n\nPuedo responder sobre servicios, áreas de trabajo, ramas peligrosas y cotizaciones. ¿Qué necesitas?'));
+          showTyping(() => addBotMsg(localizedText(WELCOME_MESSAGE)));
         }, 400);
       }
     }
@@ -3121,10 +3211,10 @@
     const lower = input.toLowerCase().trim();
     for (const item of FAQ) {
       if (item.keywords.some(keyword => lower.includes(keyword))) {
-        return item.answer;
+        return localizedText(item.answer);
       }
     }
-    return FALLBACK;
+    return localizedText(FALLBACK);
   }
 
   function sendMessage() {
@@ -3136,12 +3226,17 @@
     showTyping(() => addBotMsg(getBotResponse(text)));
   }
 
-  function sendQuick(text) {
+  function sendQuick(source) {
+    const isEnglish = getCurrentLanguage() === 'en';
+    const text = typeof source === 'string'
+      ? source
+      : source.dataset[isEnglish ? 'questionEn' : 'questionEs'] || source.textContent.trim();
     if (!chatOpen) toggleChat();
     addUserMsg(text);
     showTyping(() => addBotMsg(getBotResponse(text)));
   }
   </script>
+<script src="site-translator.js"></script>
 <script src="site-typewriter.js"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@ Incluye:
 - 6 páginas individuales de servicios con contenido SEO y llamadas a cotización.
 - Página de portafolio con proyectos destacados, galería y videos.
 - Blog SEO con 10 artículos publicados para Lakeland, Orlando, Tampa, Kissimmee, Haines City y Florida Central.
+- Botón local ES/EN para traducir el sitio y el chat sin depender de servicios externos.
 - Imágenes WebP optimizadas y videos comprimidos con carga bajo demanda.
 - Configuración de cache para Vercel en `vercel.json`.
 
