@@ -940,6 +940,120 @@
       transform: scale(1.04);
     }
 
+    .before-after-section {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 2rem;
+      align-items: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(36,138,66,0.18));
+      box-shadow: 0 18px 52px rgba(0,0,0,0.22);
+    }
+
+    .before-after-copy h3 {
+      font-family: 'Oswald', sans-serif;
+      color: white;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .before-after-copy h3 span { color: var(--safety); }
+
+    .before-after-copy p {
+      color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+      font-weight: 600;
+      max-width: 430px;
+    }
+
+    .before-after-frame {
+      position: relative;
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 0;
+      cursor: zoom-in;
+      background: #020e07;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.36);
+    }
+
+    .before-after-frame:focus-visible {
+      outline: 3px solid var(--safety);
+      outline-offset: 4px;
+    }
+
+    .before-after-frame img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: #020e07;
+      transition: transform 0.45s;
+    }
+
+    .before-after-frame:hover img { transform: scale(1.025); }
+
+    .before-after-label {
+      position: absolute;
+      top: 1rem;
+      z-index: 2;
+      padding: 8px 16px;
+      border-radius: 50px;
+      color: white;
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1rem, 2.4vw, 1.65rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-shadow: 0 3px 16px rgba(0,0,0,0.7);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+    }
+
+    .before-after-label.before {
+      left: 1rem;
+      background: rgba(7,31,16,0.86);
+    }
+
+    .before-after-label.after {
+      right: 1rem;
+      background: rgba(47,180,85,0.9);
+    }
+
+    .before-after-divider {
+      position: absolute;
+      inset: 0 auto 0 50%;
+      z-index: 2;
+      width: 3px;
+      background: linear-gradient(to bottom, transparent, white 16%, white 84%, transparent);
+      box-shadow: 0 0 18px rgba(255,255,255,0.65);
+    }
+
+    .before-after-expand {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      z-index: 2;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 9px 16px;
+      border-radius: 50px;
+      background: rgba(7,31,16,0.86);
+      color: white;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
     .video-carousel {
       position: relative;
       margin-top: 3rem;
@@ -1832,6 +1946,17 @@
       .about-images { height: 330px; }
       .why-image-stack { height: 315px; }
       .services-grid { grid-template-columns: 1fr; }
+      .before-after-section {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+      }
+      .before-after-copy p { max-width: none; }
+      .before-after-label {
+        top: 0.75rem;
+        padding: 7px 12px;
+      }
+      .before-after-label.before { left: 0.75rem; }
+      .before-after-label.after { right: 0.75rem; }
       .video-carousel { padding: 0; }
       .video-slide { flex-basis: 100%; }
       .video-arrow {
@@ -2176,6 +2301,19 @@
   </div>
 
   <div class="container">
+    <div class="before-after-section reveal">
+      <div class="before-after-copy">
+        <div class="section-tag">Antes y después</div>
+        <h3>La diferencia se ve <span>en el resultado</span></h3>
+        <p>Compara el estado inicial con el trabajo terminado. Esta sección muestra cómo una limpieza y mantenimiento exterior puede transformar el patio sin perder el enfoque en seguridad.</p>
+      </div>
+
+      <button class="before-after-frame" type="button" data-full="media/before-after.webp" data-caption="Antes y después de limpieza y mantenimiento exterior" aria-label="Ampliar imagen antes y después">
+        <img src="media/before-after.webp" alt="Antes y después de limpieza y mantenimiento exterior por AAA Rodriguez" loading="lazy" decoding="async" />
+        <span class="before-after-expand">Ver completo</span>
+      </button>
+    </div>
+
     <div class="video-carousel reveal" aria-label="Carrusel de videos de AAA Rodriguez">
       <button class="video-arrow video-prev" type="button" onclick="moveVideoSlide(-1)" aria-label="Video anterior">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -2698,18 +2836,26 @@
     return src.replace('-thumb.webp', '.webp');
   }
 
+  function showGalleryLightbox(src, alt, caption) {
+    galleryLightboxImage.src = src;
+    galleryLightboxImage.alt = alt;
+    galleryLightboxCaption.textContent = caption || alt;
+    galleryLightbox.classList.add('open');
+    galleryLightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('gallery-lightbox-open');
+    galleryLightboxClose.focus();
+  }
+
   function openGalleryImage(item) {
     const image = item.querySelector('img');
     const caption = item.querySelector('.gallery-item-overlay span');
     if (!image) return;
 
-    galleryLightboxImage.src = getFullGalleryImage(image.getAttribute('src'));
-    galleryLightboxImage.alt = image.alt;
-    galleryLightboxCaption.textContent = caption ? caption.textContent : image.alt;
-    galleryLightbox.classList.add('open');
-    galleryLightbox.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('gallery-lightbox-open');
-    galleryLightboxClose.focus();
+    showGalleryLightbox(
+      getFullGalleryImage(image.getAttribute('src')),
+      image.alt,
+      caption ? caption.textContent : image.alt
+    );
   }
 
   function closeGalleryImage() {
@@ -2733,6 +2879,13 @@
         event.preventDefault();
         openGalleryImage(item);
       }
+    });
+  });
+
+  document.querySelectorAll('.before-after-frame').forEach(frame => {
+    frame.addEventListener('click', () => {
+      const image = frame.querySelector('img');
+      showGalleryLightbox(frame.dataset.full, image.alt, frame.dataset.caption);
     });
   });
 
