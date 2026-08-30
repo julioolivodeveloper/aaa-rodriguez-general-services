@@ -169,24 +169,46 @@
       content: '';
       position: absolute;
       inset: 0;
-      background-image: url('media/photo-11.webp');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.48;
-      transform: scale(1.04);
+      z-index: 1;
+      background:
+        radial-gradient(circle at 78% 26%, rgba(242,165,26,0.2), transparent 34%),
+        linear-gradient(90deg, rgba(7,31,16,0.42), transparent 64%);
     }
 
     .portfolio-hero::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(7,31,16,0.94), rgba(18,69,33,0.72), rgba(7,31,16,0.9));
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(7,31,16,0.9), rgba(18,69,33,0.6), rgba(7,31,16,0.86));
+    }
+
+    .hero-bg-media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.66;
+      transform: scale(1.02);
+      animation: pageHeroZoom 14s ease-in-out infinite alternate;
     }
 
     .hero-inner {
       position: relative;
       z-index: 2;
       max-width: 850px;
+    }
+
+    @keyframes pageHeroZoom {
+      from { transform: scale(1.02); }
+      to { transform: scale(1.09); }
     }
 
     .section-tag {
@@ -769,6 +791,9 @@
 </div>
 
 <header class="portfolio-hero">
+  <div class="hero-bg-media" aria-hidden="true">
+    <img src="media/photo-11.webp" alt="" loading="eager" decoding="async" />
+  </div>
   <div class="container">
     <div class="hero-inner">
       <div class="section-tag">Portafolio real</div>
