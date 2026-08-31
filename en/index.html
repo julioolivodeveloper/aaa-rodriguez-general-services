@@ -3051,7 +3051,7 @@
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-vimeo-id="1222559618" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="../media/photo-08-thumb.webp" onclick="playVideo(this)" aria-label="Play branch cutting video">
+            <button class="video-card" type="button" data-vimeo-id="1222559618" data-vimeo-url="https://player.vimeo.com/video/1222559618?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="../media/photo-08-thumb.webp" onclick="playVideo(this)" aria-label="Play branch cutting video">
               <img src="../media/photo-08-thumb.webp" alt="Branch cutting video" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Branch cutting</strong>
@@ -3547,7 +3547,7 @@
     videoLightboxFrame.style.setProperty('--vimeo-ratio', button.dataset.ratio || '0.5625');
 
     const iframe = document.createElement('iframe');
-    iframe.src = getVimeoEmbedUrl(videoId);
+    iframe.src = button.dataset.vimeoUrl || getVimeoEmbedUrl(videoId);
     iframe.title = button.getAttribute('aria-label') || 'Video AAA Rodriguez';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
