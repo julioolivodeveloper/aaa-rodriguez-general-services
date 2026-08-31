@@ -646,7 +646,8 @@
       overflow: hidden;
     }
 
-    .video-lightbox-frame iframe {
+    .video-lightbox-frame iframe,
+    .video-lightbox-frame video {
       width: 100%;
       height: 100%;
       display: block;
@@ -1154,7 +1155,7 @@
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-vimeo-id="1222559618" data-vimeo-url="https://player.vimeo.com/video/1222559618?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="../media/photo-08-thumb.webp" onclick="playVideo(this)" aria-label="Play branch cutting video">
+            <button class="video-card" type="button" data-local-video="../media/video-07.mp4" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="../media/photo-08-thumb.webp" onclick="playVideo(this)" aria-label="Play branch cutting video">
               <img src="../media/photo-08-thumb.webp" alt="Branch cutting video" loading="lazy" decoding="async" />
               <span class="play-button"><span></span></span>
               <strong>Branch cutting</strong>
@@ -1379,25 +1380,42 @@
 
   function playVideo(button) {
     pauseInlineVideos();
+    const localVideo = button.dataset.localVideo;
     const videoId = button.dataset.vimeoId;
-    if (!videoId) return;
+    if (!localVideo && !videoId) return;
 
     videoLightboxFrame.innerHTML = '';
     videoLightboxFrame.style.setProperty('--vimeo-aspect', button.dataset.aspect || '9 / 16');
     videoLightboxFrame.style.setProperty('--vimeo-ratio', button.dataset.ratio || '0.5625');
 
-    const iframe = document.createElement('iframe');
-    iframe.src = button.dataset.vimeoUrl || getVimeoEmbedUrl(videoId);
-    iframe.title = button.getAttribute('aria-label') || 'Video AAA Rodriguez';
-    iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    iframe.allowFullscreen = true;
-    iframe.setAttribute('allowfullscreen', '');
-    videoLightboxFrame.appendChild(iframe);
+    if (localVideo) {
+      const video = document.createElement('video');
+      video.src = localVideo;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.poster = button.dataset.poster || '';
+      video.setAttribute('playsinline', '');
+      videoLightboxFrame.appendChild(video);
+      const playPromise = video.play();
+      if (playPromise) playPromise.catch(() => {});
+      videoLightboxFallback.hidden = true;
+      videoLightboxFallback.href = '#';
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.src = button.dataset.vimeoUrl || getVimeoEmbedUrl(videoId);
+      iframe.title = button.getAttribute('aria-label') || 'Video AAA Rodriguez';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('allowfullscreen', '');
+      videoLightboxFrame.appendChild(iframe);
 
-    videoLightboxFallback.hidden = false;
-    videoLightboxFallback.href = getVimeoWatchUrl(videoId);
-    videoLightboxFallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open on Vimeo' : 'Abrir en Vimeo';
+      videoLightboxFallback.hidden = false;
+      videoLightboxFallback.href = getVimeoWatchUrl(videoId);
+      videoLightboxFallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open on Vimeo' : 'Abrir en Vimeo';
+    }
 
     videoLightbox.classList.add('open');
     videoLightbox.setAttribute('aria-hidden', 'false');
