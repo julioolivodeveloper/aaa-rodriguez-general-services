@@ -31,9 +31,14 @@
     'Abrir menú': 'Open menu',
     'Cerrar chat': 'Close chat',
     'Abrir chat': 'Open chat',
+    'Abrir en Vimeo': 'Open on Vimeo',
     'Enviar mensaje': 'Send message',
     'Cerrar imagen': 'Close image',
     'Imagen de galería expandida': 'Expanded gallery image',
+    'Reproducir video de corte de ramas': 'Play branch cutting video',
+    'Reproducir video de poda segura': 'Play safe trimming video',
+    'Video de corte de ramas': 'Branch cutting video',
+    'Video de poda segura': 'Safe trimming video',
     'Servicios principales': 'Main services',
     'Trabajo exterior': 'Outdoor work',
     'Antes y después': 'Before and after',
@@ -99,6 +104,7 @@
     'Proyectos destacados': 'Featured projects',
     'Galería completa': 'Full gallery',
     'Videos de trabajos': 'Work videos',
+    'Los videos se abren desde Vimeo solamente cuando el visitante toca reproducir. Así el sitio no descarga archivos pesados al entrar.': 'Videos open from Vimeo only when the visitor taps play. This keeps the site from downloading heavy files on page load.',
     'Mantenimiento residencial': 'Residential maintenance',
     'Antes / después': 'Before / after',
     'Trabajo en altura': 'Work at height',
@@ -117,6 +123,8 @@
     'Prevención': 'Prevention',
     'Limpieza exterior': 'Outdoor cleanup',
     'Trabajo grande': 'Large job',
+    'Corte de ramas': 'Branch cutting',
+    'Poda segura': 'Safe trimming',
     'Asistente AAA Rodriguez': 'AAA Rodriguez Assistant',
     'Información rápida': 'Quick information',
     'Rama peligrosa': 'Dangerous branch',
@@ -458,7 +466,7 @@
   }
 
   function shouldSkipElement(element) {
-    return element.closest('script, style, noscript, svg, canvas, video, audio, [data-no-translate]') !== null;
+    return element.closest('script, style, noscript, svg, canvas, iframe, video, audio, [data-no-translate]') !== null;
   }
 
   function translateTextNodes() {

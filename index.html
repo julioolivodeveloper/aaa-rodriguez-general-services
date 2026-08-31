@@ -1233,13 +1233,22 @@
       transform: scale(1);
     }
 
-    .video-lightbox-player {
+    .video-lightbox-frame {
       display: block;
-      width: 100%;
-      max-height: calc(100dvh - 6rem);
+      width: min(100%, 88vw, calc((100dvh - 6rem) * var(--vimeo-ratio, 0.5625)), 720px);
+      aspect-ratio: var(--vimeo-aspect, 9 / 16);
+      margin: 0 auto;
       border-radius: 8px;
       background: #020e07;
-      object-fit: contain;
+      overflow: hidden;
+    }
+
+    .video-lightbox-frame iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      background: #020e07;
     }
 
     .video-lightbox-close {
@@ -2175,7 +2184,7 @@
       .video-next { right: 0.75rem; }
       .video-lightbox { padding: 0.85rem; }
       .video-lightbox-content { width: 100%; }
-      .video-lightbox-player { max-height: calc(100dvh - 5.5rem); }
+      .video-lightbox-frame { width: min(100%, 88vw, calc((100dvh - 5.5rem) * var(--vimeo-ratio, 0.5625))); }
       .video-lightbox-close { top: 0.55rem; right: 0.55rem; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-bottom { align-items: flex-start; }
@@ -2546,45 +2555,59 @@
       <div class="video-viewport">
         <div class="video-track" id="videoTrack">
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-01.mp4" data-poster="media/video-01-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de prevención">
+            <button class="video-card" type="button" data-vimeo-id="1222560361" data-aspect="100 / 177.82" data-ratio="0.5624" data-poster="media/video-01-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de prevención">
               <img src="media/video-01-poster.webp" alt="Video de prevención de riesgos" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Prevención</strong>
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-02.mp4" data-poster="media/video-02-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de limpieza exterior">
+            <button class="video-card" type="button" data-vimeo-id="1222560362" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/video-02-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de limpieza exterior">
               <img src="media/video-02-poster.webp" alt="Video de limpieza exterior" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Limpieza exterior</strong>
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-03.mp4" data-poster="media/video-03-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de remoción de árbol">
+            <button class="video-card" type="button" data-vimeo-id="1222559620" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/video-03-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de remoción de árbol">
               <img src="media/video-03-poster.webp" alt="Video de remoción de árbol" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Remoción</strong>
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-04.mp4" data-poster="media/video-04-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de mantenimiento de árbol">
+            <button class="video-card" type="button" data-vimeo-id="1222559629" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/video-04-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de mantenimiento de árbol">
               <img src="media/video-04-poster.webp" alt="Video de mantenimiento de árbol" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Mantenimiento</strong>
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-05.mp4" data-poster="media/video-05-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de antes y después">
+            <button class="video-card" type="button" data-vimeo-id="1222559627" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/video-05-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de antes y después">
               <img src="media/video-05-poster.webp" alt="Video de antes y después" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Antes y después</strong>
             </button>
           </div>
           <div class="video-slide">
-            <button class="video-card" type="button" data-src="media/video-06.mp4" data-poster="media/video-06-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de trabajo grande">
+            <button class="video-card" type="button" data-vimeo-id="1222559617" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/video-06-poster.webp" onclick="playVideo(this)" aria-label="Reproducir video de trabajo grande">
               <img src="media/video-06-poster.webp" alt="Video de trabajo grande" loading="lazy" decoding="async" />
               <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
               <strong>Trabajo grande</strong>
+            </button>
+          </div>
+          <div class="video-slide">
+            <button class="video-card" type="button" data-vimeo-id="1222559618" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/photo-08-thumb.webp" onclick="playVideo(this)" aria-label="Reproducir video de corte de ramas">
+              <img src="media/photo-08-thumb.webp" alt="Video de corte de ramas" loading="lazy" decoding="async" />
+              <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+              <strong>Corte de ramas</strong>
+            </button>
+          </div>
+          <div class="video-slide">
+            <button class="video-card" type="button" data-vimeo-id="1222559619" data-aspect="100 / 134.78" data-ratio="0.7419" data-poster="media/photo-14-thumb.webp" onclick="playVideo(this)" aria-label="Reproducir video de poda segura">
+              <img src="media/photo-14-thumb.webp" alt="Video de poda segura" loading="lazy" decoding="async" />
+              <span class="play-button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+              <strong>Poda segura</strong>
             </button>
           </div>
         </div>
@@ -2601,6 +2624,8 @@
         <button class="video-dot" type="button" onclick="goToVideoSlide(3)" aria-label="Ir al video 4"></button>
         <button class="video-dot" type="button" onclick="goToVideoSlide(4)" aria-label="Ir al video 5"></button>
         <button class="video-dot" type="button" onclick="goToVideoSlide(5)" aria-label="Ir al video 6"></button>
+        <button class="video-dot" type="button" onclick="goToVideoSlide(6)" aria-label="Ir al video 7"></button>
+        <button class="video-dot" type="button" onclick="goToVideoSlide(7)" aria-label="Ir al video 8"></button>
       </div>
     </div>
   </div>
@@ -2617,8 +2642,8 @@
 <div class="video-lightbox" id="videoLightbox" role="dialog" aria-modal="true" aria-label="Video expandido" aria-hidden="true">
   <div class="video-lightbox-content">
     <button class="video-lightbox-close" id="videoLightboxClose" type="button" aria-label="Cerrar video">&times;</button>
-    <video class="video-lightbox-player" id="videoLightboxPlayer" controls playsinline webkit-playsinline preload="none"></video>
-    <a class="video-fallback" id="videoLightboxFallback" href="#" target="_blank" rel="noopener" hidden>Abrir video</a>
+    <div class="video-lightbox-frame" id="videoLightboxFrame"></div>
+    <a class="video-fallback" id="videoLightboxFallback" href="#" target="_blank" rel="noopener" hidden>Abrir en Vimeo</a>
   </div>
 </div>
 
@@ -3058,61 +3083,67 @@
   }
 
   const videoLightbox = document.getElementById('videoLightbox');
-  const videoLightboxPlayer = document.getElementById('videoLightboxPlayer');
+  const videoLightboxFrame = document.getElementById('videoLightboxFrame');
   const videoLightboxClose = document.getElementById('videoLightboxClose');
   const videoLightboxFallback = document.getElementById('videoLightboxFallback');
 
-  function showVideoFallback() {
-    videoLightboxFallback.hidden = false;
+  function getVimeoEmbedUrl(videoId) {
+    const params = new URLSearchParams({
+      autoplay: '1',
+      muted: '0',
+      badge: '0',
+      autopause: '0',
+      title: '0',
+      byline: '0',
+      portrait: '0',
+      playsinline: '1'
+    });
+    return `https://player.vimeo.com/video/${encodeURIComponent(videoId)}?${params}`;
+  }
+
+  function getVimeoWatchUrl(videoId) {
+    return `https://vimeo.com/${encodeURIComponent(videoId)}`;
   }
 
   function closeVideoLightbox() {
     videoLightbox.classList.remove('open');
     videoLightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('video-lightbox-open');
-    videoLightboxPlayer.pause();
-    videoLightboxPlayer.removeAttribute('src');
-    videoLightboxPlayer.removeAttribute('poster');
-    videoLightboxPlayer.load();
+    videoLightboxFrame.innerHTML = '';
+    videoLightboxFrame.style.removeProperty('--vimeo-aspect');
+    videoLightboxFrame.style.removeProperty('--vimeo-ratio');
     videoLightboxFallback.hidden = true;
     videoLightboxFallback.href = '#';
   }
 
   function playVideo(button) {
     pauseInlineVideos();
-    videoLightboxPlayer.pause();
-    videoLightboxPlayer.controls = true;
-    videoLightboxPlayer.muted = false;
-    videoLightboxPlayer.defaultMuted = false;
-    videoLightboxPlayer.removeAttribute('muted');
-    videoLightboxPlayer.volume = 1;
-    videoLightboxPlayer.playsInline = true;
-    videoLightboxPlayer.poster = button.dataset.poster || '';
-    videoLightboxPlayer.src = button.dataset.src;
-    videoLightboxPlayer.setAttribute('controls', '');
-    videoLightboxPlayer.setAttribute('playsinline', '');
-    videoLightboxPlayer.setAttribute('webkit-playsinline', '');
-    videoLightboxPlayer.setAttribute('preload', 'auto');
-    videoLightboxPlayer.setAttribute('aria-label', button.getAttribute('aria-label') || 'Video AAA Rodriguez');
+    const videoId = button.dataset.vimeoId;
+    if (!videoId) return;
 
-    videoLightboxFallback.hidden = true;
-    videoLightboxFallback.href = button.dataset.src;
-    videoLightboxFallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open video' : 'Abrir video';
+    videoLightboxFrame.innerHTML = '';
+    videoLightboxFrame.style.setProperty('--vimeo-aspect', button.dataset.aspect || '9 / 16');
+    videoLightboxFrame.style.setProperty('--vimeo-ratio', button.dataset.ratio || '0.5625');
+
+    const iframe = document.createElement('iframe');
+    iframe.src = getVimeoEmbedUrl(videoId);
+    iframe.title = button.getAttribute('aria-label') || 'Video AAA Rodriguez';
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.allowFullscreen = true;
+    iframe.setAttribute('allowfullscreen', '');
+    videoLightboxFrame.appendChild(iframe);
+
+    videoLightboxFallback.hidden = false;
+    videoLightboxFallback.href = getVimeoWatchUrl(videoId);
+    videoLightboxFallback.textContent = getCurrentVideoLanguage() === 'en' ? 'Open on Vimeo' : 'Abrir en Vimeo';
 
     videoLightbox.classList.add('open');
     videoLightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('video-lightbox-open');
-    videoLightboxPlayer.load();
-
-    const playPromise = videoLightboxPlayer.play();
     videoLightboxClose.focus();
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(showVideoFallback);
-    }
   }
 
-  videoLightboxPlayer.addEventListener('error', showVideoFallback);
-  videoLightboxPlayer.addEventListener('play', () => { videoLightboxFallback.hidden = true; });
   videoLightbox.addEventListener('click', event => {
     if (event.target === videoLightbox) closeVideoLightbox();
   });
