@@ -1,7 +1,9 @@
 (function () {
   const STORAGE_KEY = 'aaaRodriguezLanguage';
+  const pageLanguage = document.documentElement.lang === 'en' || /\/en(\/|$)/.test(window.location.pathname) ? 'en' : 'es';
   const storedLanguage = localStorage.getItem(STORAGE_KEY);
-  const language = storedLanguage === 'en' ? 'en' : 'es';
+  const hasPageAlternates = () => Boolean(document.querySelector('link[rel="alternate"][hreflang="en"], link[rel="alternate"][hreflang="es"]'));
+  const language = hasPageAlternates() ? pageLanguage : (storedLanguage === 'en' ? 'en' : 'es');
 
   const exactEnglish = {
     'Inicio': 'Home',
@@ -550,7 +552,15 @@
     button.textContent = language === 'en' ? 'ES' : 'EN';
     button.setAttribute('aria-label', language === 'en' ? 'Cambiar sitio a español' : 'Translate site to English');
     button.addEventListener('click', () => {
-      localStorage.setItem(STORAGE_KEY, language === 'en' ? 'es' : 'en');
+      const nextLanguage = language === 'en' ? 'es' : 'en';
+      const alternate = document.querySelector(`link[rel="alternate"][hreflang="${nextLanguage}"]`);
+      localStorage.setItem(STORAGE_KEY, nextLanguage);
+
+      if (alternate && alternate.href) {
+        window.location.href = alternate.href;
+        return;
+      }
+
       window.location.reload();
     });
     return button;
@@ -576,7 +586,7 @@
     document.documentElement.lang = language;
     injectLanguageButtons();
 
-    if (language !== 'en') return;
+    if (language !== 'en' || pageLanguage === 'en') return;
 
     translateDocumentMetadata();
     document.querySelectorAll('*').forEach(translateAttributes);
