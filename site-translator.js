@@ -53,6 +53,7 @@
     'Ver portafolio': 'View portfolio',
     'Ver proyectos': 'View projects',
     'Ver galería': 'View gallery',
+    'Ver más': 'View more',
     'Ver completo': 'View full image',
     'Leer artículo': 'Read article',
     'Abrir menú': 'Open menu',
