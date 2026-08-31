@@ -549,8 +549,8 @@
     button.type = 'button';
     button.className = 'language-toggle';
     button.dataset.noTranslate = '';
-    button.textContent = language === 'en' ? 'ES' : 'EN';
-    button.setAttribute('aria-label', language === 'en' ? 'Cambiar sitio a español' : 'Translate site to English');
+    button.textContent = language === 'en' ? 'Español' : 'English';
+    button.setAttribute('aria-label', language === 'en' ? 'Ver sitio en español' : 'View site in English');
     button.addEventListener('click', () => {
       const nextLanguage = language === 'en' ? 'es' : 'en';
       const alternate = document.querySelector(`link[rel="alternate"][hreflang="${nextLanguage}"]`);
@@ -566,7 +566,21 @@
     return button;
   }
 
+  function injectHeaderLanguageButton(nav) {
+    if (nav.querySelector('.nav-language-mobile')) return;
+    const hamburger = nav.querySelector('.hamburger');
+    if (!hamburger) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'nav-language-mobile';
+    wrapper.dataset.noTranslate = '';
+    wrapper.appendChild(createLanguageButton());
+    nav.insertBefore(wrapper, hamburger);
+  }
+
   function injectLanguageButtons() {
+    document.querySelectorAll('nav').forEach(injectHeaderLanguageButton);
+
     document.querySelectorAll('.nav-links').forEach(navLinks => {
       if (navLinks.querySelector('.language-toggle')) return;
       const item = document.createElement('li');
@@ -574,11 +588,6 @@
       item.dataset.noTranslate = '';
       item.appendChild(createLanguageButton());
       navLinks.appendChild(item);
-    });
-
-    document.querySelectorAll('.mobile-panel').forEach(panel => {
-      if (panel.querySelector('.language-toggle')) return;
-      panel.appendChild(createLanguageButton());
     });
   }
 
