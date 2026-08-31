@@ -311,6 +311,37 @@
       animation: fadeSlideDown 0.8s ease 0.6s both;
     }
 
+    .hero-message {
+      max-width: 760px;
+      display: grid;
+      gap: 0.55rem;
+      font-size: clamp(0.92rem, 1.55vw, 1.08rem);
+      line-height: 1.55;
+    }
+
+    .hero-message p,
+    .hero-message ul {
+      margin: 0;
+    }
+
+    .hero-message-brand,
+    .hero-message-lead {
+      color: white;
+      font-weight: 900;
+    }
+
+    .hero-message-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.28rem 1rem;
+    }
+
+    .hero-message-list li {
+      min-width: 0;
+    }
+
     .hero-buttons {
       display: flex;
       gap: 1rem;
@@ -2192,6 +2223,7 @@
       .about-features { grid-template-columns: 1fr; }
       .hero-content { padding: 7.2rem 1.25rem 4rem; }
       .hero-title .typewriter-line { min-height: 2.16em; }
+      .hero-message-list { grid-template-columns: 1fr; }
       .container { padding: 0 1.25rem; }
       .hero-stats { gap: 1.5rem; }
       .scroll-indicator { display: none; }
@@ -2201,16 +2233,38 @@
 
     @media (max-width: 420px) {
       .brand-image { width: 118px; height: 48px; }
+      .hero-content { padding: 6rem 1.25rem 3.2rem; }
+      .hero-badge {
+        font-size: 0.7rem;
+        padding: 9px 14px;
+        margin-bottom: 1rem;
+      }
+      .hero-title {
+        font-size: 2.55rem;
+        margin-bottom: 0.85rem;
+      }
+      .hero-buttons { gap: 0.6rem; }
       .btn-primary,
       .btn-secondary,
       .btn-white,
       .btn-outline-white {
         width: 100%;
+        min-height: 48px;
+        padding-top: 12px;
+        padding-bottom: 12px;
         padding-left: 22px;
         padding-right: 22px;
+        font-size: 0.94rem;
       }
       .hero-stat-num { font-size: 2.1rem; }
-      .hero-title .typewriter-line { min-height: 3.2em; }
+      .hero-title .typewriter-line { min-height: 2.25em; }
+      .hero-message {
+        font-size: 0.8rem;
+        line-height: 1.31;
+        gap: 0.26rem;
+        margin-bottom: 1.2rem;
+      }
+      .hero-message-list { gap: 0.16rem; }
       .contact-form { padding: 1.5rem; }
     }
 
@@ -2264,9 +2318,22 @@
       </span>
     </h1>
 
-    <p class="hero-subtitle">
-      AAA Rodriguez General Services ayuda a prevenir peligros antes de que una rama, un árbol o un patio descuidado cause daños. Servimos toda Florida Central con poda, remoción, limpieza y mantenimiento de áreas verdes.
-    </p>
+    <div class="hero-subtitle hero-message">
+      <p class="hero-message-brand">🌳 AAA RODRIGUEZ GENERAL SERVICES 🌳</p>
+      <p class="hero-message-lead">🌿 ¡CUIDAMOS Y EMBELLECEMOS SU HOGAR! 🏡</p>
+      <p>¿Tiene árboles demasiado grandes, ramas peligrosas o árboles cerca de su techo? 🌳⚠️</p>
+      <ul class="hero-message-list">
+        <li>✅ Corte y poda de árboles</li>
+        <li>✅ Eliminación de ramas peligrosas</li>
+        <li>✅ Limpieza de árboles y propiedades</li>
+        <li>✅ Removemos árboles que representen un peligro</li>
+        <li>✅ Protección y seguridad alrededor de su hogar</li>
+        <li>✅ Trabajo profesional para mantener su propiedad limpia y bonita</li>
+      </ul>
+      <p>🌳 ¡No espere a que una rama caiga sobre su techo o su casa!</p>
+      <p>Déjenos ayudarle a mantener su hogar seguro, limpio y hermoso.</p>
+      <p>📞 AAA RODRIGUEZ GENERAL SERVICE<br>Trabajo responsable • Calidad y Seguridad<br>📍 ¡Sirviendo a nuestra comunidad!</p>
+    </div>
 
     <div class="hero-buttons">
       <a href="tel:+18632578339" class="btn-primary">
